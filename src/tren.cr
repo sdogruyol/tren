@@ -1,5 +1,7 @@
 require "./tren/*"
 
 module Tren
-  # TODO Put your code here
+  macro load(filename)
+    \{{ run("../src/reader", {{filename}}) }}
+  end
 end
