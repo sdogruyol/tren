@@ -19,8 +19,5 @@ end
 sql = File.read(ARGV[0])
 meta = get_metadata(sql)
 puts "def #{meta}"
-puts "  sql = <<-SQL"
-puts "    #{parse(sql)}"
-puts "  SQL"
-puts "  sql.strip"
+puts "\"#{parse(sql).strip}\""
 puts "end"
