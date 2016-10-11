@@ -1,9 +1,11 @@
 class Parser
+  LINE_RE = /^\s*--\s*name:\s*([a-z\_\?\!0-9]+)(\(.*?\)|).*?\n/
+  PARAM_RE = /\{\{(.*?)\}\}/
+
   @metadata = ""
   @sql_lines = [] of String
 
-  def initialize
-    @lines = File.read_lines(ARGV[0])
+  def initialize(@lines : Array(String))
     @metadata_index = 0
   end
 
@@ -29,7 +31,7 @@ class Parser
   # checks if the given line contains metadata
   # example: -- name: get_users(name, surname)
   def metadata?(line)
-    line.match(/^\s*-- name: ([a-z\_\?\!]+?\(.*?\)).*?\n/)
+    line.match(LINE_RE)
   end
 
   # checks for lines that is neither comment line (starts with -- )
@@ -39,25 +41,29 @@ class Parser
   end
 
   def get_metadata(meta)
-    meta.gsub(/^\s*-- name: ([a-z\_\?\!]+?\(.*?\)).*?\n/) do |token, match|
-      match[1]
+    meta.gsub(LINE_RE) do |token, match|
+      "#{match[1]}#{match[2]}"
     end
   end
 
   def parse_sql(sql)
-    sql.gsub(/\{\{(.*?)\}\}/) do |token, match|
+    sql.gsub(PARAM_RE) do |token, match|
       "\#{#{match[1]}}"
     end
   end
 
-  def define_method(metadata, sql)
-    heredoc = <<-SQL
-    #{sql}
-    SQL
+  def set_indent(sql)
+    sql.lines.map do |line|
+      "  #{line}"
+    end.join("").strip
+  end
 
+  def define_method(metadata, sql)
     method = <<-METHOD
     def #{metadata}
-      "#{heredoc}"
+      <<-SQL
+      #{set_indent(sql)}
+      SQL
     end
     METHOD
     puts "#{method}"
