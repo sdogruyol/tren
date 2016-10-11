@@ -6,6 +6,7 @@ Tren.load("#{__DIR__}/fixtures/test3.sql")
 Tren.load("#{__DIR__}/fixtures/multiline.sql")
 Tren.load("#{__DIR__}/fixtures/multiple_multiline.sql")
 Tren.load("#{__DIR__}/fixtures/escape.sql")
+Tren.load("#{__DIR__}/fixtures/injection.sql")
 Tren.load("#{__DIR__}/fixtures/glob/**/*.sql")
 
 describe Tren do
@@ -36,6 +37,11 @@ describe Tren do
 
   it "should handle multiline query" do
     multiline("kemal").should eq("select * from users\nwhere name = 'kemal'\nlimit 1")
+  end
+
+  it "should escape parameters" do
+    injectable("'; drop table users; --").should eq("select * from users where ''; drop table users; --'")
+    protection("'; drop table users; --").should eq("select * from users where '\\'; drop table users; --'")
   end
 
   it "should load glob files" do

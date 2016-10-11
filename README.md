@@ -46,9 +46,15 @@ SELECT * FROM users WHERE name = '{{ name }}' AND surname = '{{ surname }}'
 SELECT * FROM users WHERE name = '{{ name }}' AND age = {{ age }}
 ```
 
-## Roadmap
+### Prevent SQL Injections
 
-  - Prevent SQL Injection.
+By default, SQL's are SQL injectable by default. But you are able to escape injectable parameters by writing `!` to the parameter.
+
+```sql
+-- name: get_users(name : String, surname : String)
+
+SELECT * FROM users WHERE name = '{{! name }}' AND surname = '{{! surname }}'
+```
 
 ## Contributing
 
