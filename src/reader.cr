@@ -1,13 +1,13 @@
-def isMeta(line)
+def is_meta(line)
   line.match(/^\s*-- name: ([a-z\_\?\!]+?\(.*?\)).*?\n/)
 end
 
-def isComment(line)
+def is_comment(line)
   line.match(/^\s*--.*/)
 end
 
 def parse(lines)
-  lines.reject {|x| isComment(x) && !isMeta(x) || x == "\n"}
+  lines.reject {|x| is_comment(x) && !is_meta(x) || x == "\n"}
 end
 
 def get_metadata(meta)
