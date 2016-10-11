@@ -47,7 +47,6 @@ SELECT * FROM users WHERE name = '{{ name }}' AND age = {{ age }}
 ## Roadmap
 
   - Prevent SQL Injection.
-  - One file, multiple queries.
 
 ## Contributing
 
