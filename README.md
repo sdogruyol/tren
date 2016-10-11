@@ -30,6 +30,9 @@ Require Tren and load your SQL file. It's going to create a first class method t
 require "tren"
 
 Tren.load("/path/to/your/file.sql")
+
+# Or you can load multiple files at once:
+Tren.load("./db/**/*.sql")
 ```
 
 ### Overloading
