@@ -1,5 +1,7 @@
 # Tren
 
+[![Build Status](https://travis-ci.org/sdogruyol/tren.svg?branch=master)](https://travis-ci.org/sdogruyol/tren)
+
 Tren lets you use your SQL as a first class method in your Crystal code.
 
 ## Installation
