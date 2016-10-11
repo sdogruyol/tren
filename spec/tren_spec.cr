@@ -3,6 +3,7 @@ require "./spec_helper"
 Tren.load("#{__DIR__}/fixtures/test.sql")
 Tren.load("#{__DIR__}/fixtures/test2.sql")
 Tren.load("#{__DIR__}/fixtures/test3.sql")
+Tren.load("#{__DIR__}/fixtures/test4.sql")
 
 describe Tren do
   it "should create and use method" do
@@ -23,5 +24,9 @@ describe Tren do
 
   it "should handle double quotes" do
     get_user_info("Serdar \"sdogruyol\"", "Doğruyol").should eq("select * from users where name = 'Serdar \"sdogruyol\"' and name = 'Doğruyol'")
+  end
+  
+  it "should parse multi line  queries from a file" do
+    get_users_info("alpert", 42, 52).should eq("select * from users where name = 'alpert' and age BETWEEN 42 and 52")
   end
 end
