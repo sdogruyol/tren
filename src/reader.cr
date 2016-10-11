@@ -11,7 +11,7 @@ def is_sql(line)
 end
 
 def parse(lines)
-  lines.select {|line| is_metadata(line) || is_sql(line)}
+  lines.select { |line| is_metadata(line) || is_sql(line) }
 end
 
 def get_metadata(meta)
@@ -30,10 +30,22 @@ lines = File.read_lines(ARGV[0])
 lines = parse(lines)
 lines.each_slice(2) do |metadata_and_sql|
   metadata = get_metadata(metadata_and_sql[0])
-  sql = parse_sql(metadata_and_sql[1])
+  sql = parse_sql(metadata_and_sql[1]).strip
 
   puts "def #{metadata}"
   puts "\"#{sql.strip}\""
   puts "end"
   puts "\n"
+
+  heredoc = <<-SQL
+  #{sql}
+  SQL
+
+  method = <<-METHOD
+  def #{metadata}
+    "#{heredoc}"
+  end
+  METHOD
+
+  puts "#{method}"
 end
