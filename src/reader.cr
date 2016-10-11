@@ -1,13 +1,17 @@
-def is_meta(line)
+# checks if the given line contains metadata
+# example: -- name: get_users(name, surname)
+def is_metadata(line)
   line.match(/^\s*-- name: ([a-z\_\?\!]+?\(.*?\)).*?\n/)
 end
 
-def is_comment(line)
-  line.match(/^\s*--.*/)
+# checks for lines that is neither comment line (starts with -- )
+# nor whitespace
+def is_sql(line)
+  line.match(/^(?!\s*--)/) && line.match(/\S/)
 end
 
 def parse(lines)
-  lines.reject {|line| is_comment(line) && !is_meta(line) || line == "\n"}
+  lines.select {|line| is_metadata(line) || is_sql(line)}
 end
 
 def get_metadata(meta)
@@ -24,11 +28,11 @@ end
 
 lines = File.read_lines(ARGV[0])
 lines = parse(lines)
-lines.each_slice(2) do |meta_and_sql|
-  meta = get_metadata(meta_and_sql[0])
-  sql = parse_sql(meta_and_sql[1])
+lines.each_slice(2) do |metadata_and_sql|
+  metadata = get_metadata(metadata_and_sql[0])
+  sql = parse_sql(metadata_and_sql[1])
 
-  puts "def #{meta}"
+  puts "def #{metadata}"
   puts "\"#{sql.strip}\""
   puts "end"
   puts "\n"
