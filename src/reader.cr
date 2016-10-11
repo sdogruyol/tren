@@ -7,7 +7,7 @@ def is_comment(line)
 end
 
 def parse(lines)
-  lines.reject {|x| is_comment(x) && !is_meta(x) || x == "\n"}
+  lines.reject {|line| is_comment(line) && !is_meta(line) || line == "\n"}
 end
 
 def get_metadata(meta)
