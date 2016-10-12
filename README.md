@@ -49,6 +49,19 @@ SELECT * FROM users WHERE name = '{{ name }}' AND surname = '{{ surname }}'
 SELECT * FROM users WHERE name = '{{ name }}' AND age = {{ age }}
 ```
 
+#### Meaningful Compiler Errors
+
+Since Tren is creating _native_ Crystal methods, you can see meaningful errors on compile process.
+
+```
+in ./your/file: no overload matches 'get_users' with types String, Bool
+Overloads are:
+ - get_users(name : String, surname : String)
+ - get_users(name : String, age : Int32)
+
+    get_users("john", true)
+```
+
 ### Prevent SQL Injections
 
 By default, SQL's are SQL injectable by default. But you are able to escape injectable parameters by writing `!` to the parameter.
