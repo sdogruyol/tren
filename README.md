@@ -30,6 +30,9 @@ Require Tren and load your SQL file. It's going to create a first class method t
 require "tren"
 
 Tren.load("/path/to/your/file.sql")
+
+# Or you can load multiple files at once:
+Tren.load("./db/**/*.sql")
 ```
 
 ### Overloading
@@ -46,9 +49,32 @@ SELECT * FROM users WHERE name = '{{ name }}' AND surname = '{{ surname }}'
 SELECT * FROM users WHERE name = '{{ name }}' AND age = {{ age }}
 ```
 
-## Roadmap
+### Prevent SQL Injections
 
-  - Prevent SQL Injection.
+By default, SQL's are SQL injectable by default. But you are able to escape injectable parameters by writing `!` to the parameter.
+
+```sql
+-- name: get_users(name : String, surname : String)
+
+SELECT * FROM users WHERE name = '{{! name }}' AND surname = '{{! surname }}'
+```
+
+### Composing SQLs
+
+You can compose Tren methods easily to be DRY.
+
+```sql
+-- name: filter_user(name : String, surname : String)
+
+WHERE name = '{{! name }}' AND surname = '{{! surname }}'
+```
+
+Let's reuse this now:
+```sql
+-- name: get_users(name : String, surname : String)
+
+SELECT * FROM users {{ filter_user(name, surname) }}
+```
 
 ## Contributing
 
