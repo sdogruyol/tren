@@ -59,6 +59,23 @@ By default, SQL's are SQL injectable by default. But you are able to escape inje
 SELECT * FROM users WHERE name = '{{! name }}' AND surname = '{{! surname }}'
 ```
 
+### Composing SQLs
+
+You can compose Tren methods easily to be DRY.
+
+```sql
+-- name: filter_user(name : String, surname : String)
+
+WHERE name = '{{! name }}' AND surname = '{{! surname }}'
+```
+
+Let's reuse this now:
+```sql
+-- name: get_users(name : String, surname : String)
+
+SELECT * FROM users {{ filter_user(name, surname) }}
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/sdogruyol/tren/fork )

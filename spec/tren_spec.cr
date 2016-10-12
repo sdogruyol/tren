@@ -7,6 +7,7 @@ Tren.load("#{__DIR__}/fixtures/multiline.sql")
 Tren.load("#{__DIR__}/fixtures/multiple_multiline.sql")
 Tren.load("#{__DIR__}/fixtures/escape.sql")
 Tren.load("#{__DIR__}/fixtures/injection.sql")
+Tren.load("#{__DIR__}/fixtures/composed.sql")
 Tren.load("#{__DIR__}/fixtures/glob/**/*.sql")
 
 describe Tren do
@@ -42,6 +43,11 @@ describe Tren do
   it "should escape parameters" do
     injectable("'; drop table users; --").should eq("select * from users where ''; drop table users; --'")
     protection("'; drop table users; --").should eq("select * from users where '\\'; drop table users; --'")
+  end
+
+  it "should generate composed sqls" do
+    composition_1.should eq("where name = \"fatih\"")
+    composition_2.should eq("select * from users where name = \"fatih\"")
   end
 
   it "should load glob files" do
