@@ -64,7 +64,7 @@ Overloads are:
 
 ### Prevent SQL Injections
 
-By default, SQL's are SQL injectable by default. But you are able to escape injectable parameters by writing `!` to the parameter.
+By default, SQL's are escaped by default. But you are able to make injectable (raw) parameters by writing `!` to the parameter.
 
 ```sql
 -- name: get_users(name : String, surname : String)
@@ -79,14 +79,14 @@ You can compose Tren methods easily to be DRY.
 ```sql
 -- name: filter_user(name : String, surname : String)
 
-WHERE name = '{{! name }}' AND surname = '{{! surname }}'
+WHERE name = '{{ name }}' AND surname = '{{ surname }}'
 ```
 
 Let's reuse this now:
 ```sql
 -- name: get_users(name : String, surname : String)
 
-SELECT * FROM users {{ filter_user(name, surname) }}
+SELECT * FROM users {{! filter_user(name, surname) }}
 ```
 
 ## Contributing

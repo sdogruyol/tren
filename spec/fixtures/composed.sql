@@ -4,4 +4,4 @@ where name = "fatih"
 
 -- name: composition_2
 
-select * from users {{ composition_1 }}
+select * from users {{! composition_1 }}

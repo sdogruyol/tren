@@ -1,7 +1,7 @@
 class Parser
-  LINE_RE = /^\s*--\s*name:\s*([a-z\_\?\!0-9]+)(\(.*?\)|).*?\n/
-  PARAM_RE = /\{\{(.*?)\}\}/
-  PARAM_ESC_RE = /\{\{\!(.*?)\}\}/
+  LINE_RE      = /^\s*--\s*name:\s*([a-z\_\?\!0-9]+)(\(.*?\)|).*?\n/
+  PARAM_RE     = /\{\{(.*?)\}\}/
+  PARAM_RAW_RE = /\{\{\!(.*?)\}\}/
 
   @metadata = ""
   @sql_lines = [] of String
@@ -48,11 +48,11 @@ class Parser
   end
 
   def parse_sql(sql)
-    sql = sql.gsub(PARAM_ESC_RE) do |token, match|
-      "\#{Tren.escape(#{match[1]})}"
+    sql = sql.gsub(PARAM_RAW_RE) do |token, match|
+      "\#{#{match[1]}}"
     end
     sql = sql.gsub(PARAM_RE) do |token, match|
-      "\#{#{match[1]}}"
+      "\#{Tren.escape(#{match[1]})}"
     end
   end
 
