@@ -64,7 +64,7 @@ Overloads are:
 
 ### Prevent SQL Injections
 
-By default, SQL's are escaped by default. But you are able to make injectable (raw) parameters by writing `!` to the parameter.
+SQL statements are escaped by default. But you are able to make injectable (raw) parameters by writing `!` to the parameter.
 
 ```sql
 -- name: get_users(name : String, surname : String)
