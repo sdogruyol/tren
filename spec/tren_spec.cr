@@ -1,13 +1,6 @@
 require "./spec_helper"
 
-Tren.load("#{__DIR__}/fixtures/test.sql")
-Tren.load("#{__DIR__}/fixtures/test2.sql")
-Tren.load("#{__DIR__}/fixtures/test3.sql")
-Tren.load("#{__DIR__}/fixtures/multiline.sql")
-Tren.load("#{__DIR__}/fixtures/multiple_multiline.sql")
-Tren.load("#{__DIR__}/fixtures/escape.sql")
-Tren.load("#{__DIR__}/fixtures/injection.sql")
-Tren.load("#{__DIR__}/fixtures/composed.sql")
+Tren.load("#{__DIR__}/fixtures/*.sql")
 Tren.load("#{__DIR__}/fixtures/glob/**/*.sql")
 
 describe Tren do
