@@ -89,6 +89,14 @@ Let's reuse this now:
 SELECT * FROM users {{! filter_user(name, surname) }}
 ```
 
+### Escape Character
+
+For example PostgreSQL uses `''` for escaping string. To set your escape character for `postgresql`.
+
+```ruby
+Tren.escape_character = "\\'"
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/sdogruyol/tren/fork )

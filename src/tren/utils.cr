@@ -1,7 +1,13 @@
 module Tren
+  @@escape_character = "\\"
+
+  def self.escape_character=(escape_character : String)
+    @@escape_mode = escape_character
+  end
+
   # Overload Types
   def self.escape(str : String)
-    str.gsub(/\\|'/) { |c| "\\#{c}" }
+    str.gsub(/\\|'/) { |c| @@escape_character + c }
   end
 
   def self.escape(anything)
