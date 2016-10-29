@@ -1,4 +1,4 @@
-# Tren
+![Tren Logo](logo.png)
 
 [![Build Status](https://travis-ci.org/sdogruyol/tren.svg?branch=master)](https://travis-ci.org/sdogruyol/tren)
 
