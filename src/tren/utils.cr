@@ -2,7 +2,7 @@ module Tren
   @@escape_character = "\\"
 
   def self.escape_character=(escape_character : String)
-    @@escape_mode = escape_character
+    @@escape_character = escape_character
   end
 
   # Overload Types
