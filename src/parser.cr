@@ -1,5 +1,5 @@
 class Parser
-  LINE_RE      = /^\s*--\s*name:\s*([a-z\_\?\!0-9]+)(\(.*?\)|).*?\n/
+  LINE_RE      = /^\s*--\s*name:\s*([a-z\_\?\!0-9]+)(\(.*?\)|).*?$/
   PARAM_RE     = /\{\{(.*?)\}\}/
   PARAM_RAW_RE = /\{\{\!(.*?)\}\}/
 
@@ -23,7 +23,7 @@ class Parser
             @sql_lines << sql
           end
         end
-        define_method(@metadata, @sql_lines.each.join("\n"))
+        define_method(@metadata, @sql_lines.each.join("\\n"))
         @sql_lines.clear
       end
     end
@@ -32,7 +32,7 @@ class Parser
   # checks if the given line contains metadata
   # example: -- name: get_users(name, surname)
   def metadata?(line)
-    line.match(LINE_RE)
+    line.chomp.match(LINE_RE)
   end
 
   # checks for lines that is neither comment line (starts with -- )
