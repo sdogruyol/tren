@@ -7,7 +7,12 @@ module Tren
 
   # Overload Types
   def self.escape(str : String)
-    str.gsub(/\\|'/) { |c| @@escape_character + c }
+    if @@escape_character == "\\'"
+      # PostgreSQL string literals escape apostrophes by doubling them.
+      str.gsub("'", "''")
+    else
+      str.gsub(/\\|'/) { |c| @@escape_character + c }
+    end
   end
 
   def self.escape(anything)

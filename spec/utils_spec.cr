@@ -18,7 +18,7 @@ describe Tren do
 
     it "supports custom escape character" do
       Tren.escape_character = "\\'"
-      Tren.escape("a'b\\c").should eq("a\\''b\\'\\c")
+      Tren.escape("a'b\\c").should eq("a''b\\c")
       Tren.escape_character = "\\"
     end
   end
