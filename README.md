@@ -1,5 +1,7 @@
 ![Tren Logo](logo.svg)
 
+[![Build](https://github.com/sdogruyol/tren/actions/workflows/ci.yml/badge.svg)](https://github.com/sdogruyol/tren/actions/workflows/ci.yml)
+
 # Tren
 
 Use SQL files as first-class Crystal methods.
