@@ -1,5 +1,5 @@
 require "./spec_helper"
-require "../src/parser"
+require "../src/tren/parser"
 
 describe Parser do
   describe "#metadata?" do
