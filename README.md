@@ -113,10 +113,14 @@ SELECT * FROM users {{! filter_user(name, surname) }}
 String parameters are escaped by default.  
 Non-string values are passed through as-is.
 
-You can customize the escape prefix:
+You can customize the escape behavior:
 
 ```crystal
-Tren.escape_character = "\\'" # example for PostgreSQL-style escaping
+Tren.escape_character = "\\"
+# => escapes both quotes and backslashes with a backslash prefix (default)
+
+Tren.escape_character = "\\'"
+# => PostgreSQL-style single-quote escaping ("I'm" => "I''m")
 ```
 
 ## Security Notes
