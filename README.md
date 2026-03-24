@@ -54,6 +54,68 @@ Then install dependencies:
 shards install
 ```
 
+## Using with crystal-db
+
+Tren generates **plain SQL strings**. Any driver built on [crystal-db](https://github.com/crystal-lang/crystal-db) can run them with `DB#query`, `DB#exec`, `DB#scalar`, and friends—no special adapter is required.
+
+Add `db` plus a driver (SQLite, PostgreSQL, MySQL, etc.) to `shard.yml`:
+
+```yaml
+dependencies:
+  tren:
+    github: sdogruyol/tren
+  db:
+    github: crystal-lang/crystal-db
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+```
+
+Example SQL (`queries/users.sql`):
+
+```sql
+-- name: users_named(name : String)
+SELECT id, name FROM users WHERE name = '{{ name }}'
+
+-- name: insert_user(name : String, age : Int32)
+INSERT INTO users (name, age) VALUES ('{{ name }}', {{ age }})
+```
+
+Example app code:
+
+```crystal
+require "db"
+require "sqlite3"
+require "tren"
+
+Tren.load("./queries/*.sql")
+
+struct User
+  DB.mapping({
+    id:   Int32,
+    name: String,
+  })
+end
+
+DB.open "sqlite3://./data.db" do |db|
+  # Many rows, mapped with DB.mapping
+  rows = db.query_all users_named("Ada"), as: User
+
+  # Iterate without a mapping type
+  db.query users_named("Ada") do |rs|
+    rs.each do
+      puts "#{rs.read(Int32)} — #{rs.read(String)}"
+    end
+  end
+
+  # Statements that do not return rows
+  db.exec insert_user("Bob", 40)
+end
+```
+
+With PostgreSQL, the pattern is the same: `require "pg"`, then `DB.open "postgres://user:pass@localhost/dbname" do |db| ... end`.
+
+**Note:** Tren builds the final SQL at compile time / call time with its own escaping. That is separate from crystal-db’s `?` placeholders. For untrusted input, rely on Tren’s `{{ x }}` escaping (see [Security Notes](#security-notes)) or use prepared statements and raw SQL where appropriate.
+
 ## SQL File Format
 
 Each query must start with metadata:
