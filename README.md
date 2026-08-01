@@ -90,14 +90,14 @@ require "tren"
 Tren.load("./queries/*.sql")
 
 struct User
-  DB.mapping({
-    id:   Int32,
-    name: String,
-  })
+  include DB::Serializable
+
+  property id : Int32
+  property name : String
 end
 
 DB.open "sqlite3://./data.db" do |db|
-  # Many rows, mapped with DB.mapping
+  # Many rows, mapped with DB::Serializable
   rows = db.query_all users_named("Ada"), as: User
 
   # Iterate without a mapping type
